@@ -5,6 +5,7 @@ const cors = require('cors');
 const pino = require('pino');
 const pinoHttp = require('pino-http');
 const authRoutes = require('./routes/auth');
+const todoRoutes = require('./routes/todo');
 const { authenticateToken, errorHandler } = require('./middleware/auth');
 
 const logger = pino({ level: config.LOG_LEVEL });
@@ -22,6 +23,9 @@ app.use('/auth', authRoutes);
 app.get('/me', authenticateToken, (req, res) => {
   res.json({ user: req.user });
 });
+
+// Todo routes (authenticated via router-level middleware)
+app.use('/todos', todoRoutes);
 
 // Health check
 app.get('/health', (_req, res) => {
