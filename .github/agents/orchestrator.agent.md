@@ -19,6 +19,7 @@ You do NOT perform work directly. You:
 | **Planner-Executor** | `patterns/planner_executor/` | 구현, 마이그레이션, 리팩토링 등 **계획 → 실행 → 검증** 작업 |
 | **Debate & Critic** | `patterns/debate_critic/` | 아키텍처 선택, 기술 스택 비교 등 **의사결정** 주제 |
 | **Generator-Evaluator** | `patterns/generator_evaluator/` | 코드/문서 생성, 리뷰 등 **생성 → 평가 → 개선** 작업 |
+| **Code Generation** | `patterns/code_generation/` | 코드 설계·구현·리뷰 등 **설계 → 구현 → 리뷰** 작업 |
 
 ## Selection Heuristics
 
@@ -37,6 +38,11 @@ You do NOT perform work directly. You:
 - Content/code generation with quality iteration
 - Keywords: generate, write, review, evaluate, improve, draft, 초안
 
+### → Code Generation
+- "코드 설계해줘", "설계하고 구현해줘", "코드 작성하고 리뷰해줘", "API 만들고 리뷰해줘"
+- End-to-end code creation: design → implement → review
+- Keywords: 설계, design, architect, code review, 코드 생성, implement and review, 구현하고 리뷰
+
 ### → Ambiguous
 If the intent is unclear, ask the user:
 ```
@@ -44,6 +50,7 @@ If the intent is unclear, ask the user:
 1. 📐 계획-실행 (Plan & Execute) — 단계별 계획 후 구현
 2. ⚔️ 토론-비평 (Debate & Critic) — 대립적 논의로 최선안 도출
 3. ⚡ 생성-평가 (Generate & Evaluate) — 반복 개선으로 품질 향상
+4. 🏗️ 코드 생성 (Code Generation) — 설계 → 구현 → 리뷰
 ```
 
 ## Execution Flow

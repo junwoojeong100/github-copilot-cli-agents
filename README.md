@@ -15,6 +15,7 @@ github-copilot-cli-squad/
 │   └── devcontainer.json               # Codespace 시작 시 init.sh 자동 실행
 ├── .github/agents/                     # Copilot CLI 에이전트 정의
 │   ├── orchestrator.agent.md           # 오케스트레이터 — 요청 분석 후 패턴 자동 선택
+│   ├── code_generation.agent.md        # 코드 설계→구현→리뷰 패턴 에이전트
 │   ├── planner_executor.agent.md       # 계획-실행 패턴 에이전트
 │   ├── debate_critic.agent.md          # 토론-비평 패턴 에이전트
 │   └── generator_evaluator.agent.md    # 생성-평가 패턴 에이전트
@@ -22,6 +23,7 @@ github-copilot-cli-squad/
 ├── .copilot/
 │   └── mcp-config.json                 # MCP 서버 설정
 └── patterns/                           # 멀티 에이전트 협업 패턴 정의
+    ├── code_generation/                # 코드 설계→구현→리뷰 패턴
     ├── debate_critic/                  # 변증법적 토론 패턴
     ├── generator_evaluator/            # 생성-평가 반복 패턴
     └── planner_executor/               # 계획-실행 분리 패턴
@@ -65,6 +67,7 @@ copilot --agent orchestrator --yolo
 copilot --agent planner_executor --yolo
 copilot --agent debate_critic --yolo
 copilot --agent generator_evaluator --yolo
+copilot --agent code_generation --yolo
 
 # 기본 Copilot CLI (에이전트 없이)
 copilot
@@ -95,6 +98,7 @@ copilot --agent orchestrator --yolo
 | "구현해줘", "셋업해줘", "마이그레이션" | 📐 Planner-Executor |
 | "비교해줘", "장단점", "뭐가 나을까" | ⚔️ Debate & Critic |
 | "생성해줘", "리뷰해줘", "개선해줘" | ⚡ Generator-Evaluator |
+| "설계하고 구현해줘", "코드 작성하고 리뷰해줘" | 🏗️ Code Generation |
 
 ---
 
@@ -127,13 +131,13 @@ copilot --agent orchestrator --yolo
 
 #### 패턴별 팀 비교
 
-| | 📐 Planner-Executor | ⚔️ Debate & Critic | ⚡ Generator-Evaluator |
-|---|---|---|---|
-| **목적** | 체계적 실행 | 최선의 결론 도출 | 반복 개선으로 품질 향상 |
-| **팀 구성** | Planner → Executor → Validator | Proposer ↔ Opponent → Critic → Synthesizer | Generator → Evaluator → Refiner |
-| **핵심 루프** | 계획 → 실행 → 검증 | 제안 → 반론 → 평가 | 생성 → 평가 → 개선 |
-| **최대 반복** | Revise 후 재실행 | 3 Rounds | 3 Cycles |
-| **적합한 작업** | 구현, 마이그레이션, 셋업 | 기술 선택, 아키텍처 비교 | 코드 생성, 문서 작성, 리뷰 |
+| | 📐 Planner-Executor | ⚔️ Debate & Critic | ⚡ Generator-Evaluator | 🏗️ Code Generation |
+|---|---|---|---|---|
+| **목적** | 체계적 실행 | 최선의 결론 도출 | 반복 개선으로 품질 향상 | 설계 기반 코드 생성 |
+| **팀 구성** | Planner → Executor → Validator | Proposer ↔ Opponent → Critic → Synthesizer | Generator → Evaluator → Refiner | Architect → Developer → Reviewer |
+| **핵심 루프** | 계획 → 실행 → 검증 | 제안 → 반론 → 평가 | 생성 → 평가 → 개선 | 설계 → 구현 → 리뷰 |
+| **최대 반복** | Revise 후 재실행 | 3 Rounds | 3 Cycles | 3 Cycles |
+| **적합한 작업** | 구현, 마이그레이션, 셋업 | 기술 선택, 아키텍처 비교 | 코드 생성, 문서 작성, 리뷰 | 코드 설계·구현·리뷰 통합 |
 
 ---
 
@@ -178,6 +182,19 @@ copilot --agent orchestrator --yolo
 | 수정 | **Planner** | 태스크 ③에 환불 엔드포인트 추가 |
 | 재실행 | **Executor** | 수정된 ③④⑤ 재구현 → 모든 태스크 ✅ Pass |
 | 최종 | **Scribe** | 전체 계획·실행·검증 이력 문서화 |
+
+#### 시나리오 4: "사용자 프로필 API를 설계하고 구현하고 리뷰해줘"
+
+> **선택 패턴:** 🏗️ Code Generation
+
+| 단계 | 에이전트 | 수행 내용 |
+|------|---------|----------|
+| 설계 | **Architect** | 파일 구조 설계: services/profile.js + routes/profile.js, RESTful 인터페이스 정의, 기존 auth 미들웨어 재사용 |
+| 구현 | **Developer** | Architect 설계에 따라 CRUD API 코드 구현 |
+| 리뷰 (Cycle 1) | **Reviewer** | ❌ Revise — "입력 검증 누락, SQL Injection 위험" |
+| 수정 | **Developer** | express-validator 적용, 파라미터 이스케이핑 추가 |
+| 리뷰 (Cycle 2) | **Reviewer** | ✅ Pass — 보안 8/10, 코드 품질 9/10, 설계 준수 10/10 |
+| 최종 | **Scribe** | 설계·구현·리뷰 과정과 최종 API 명세 문서화 |
 
 ---
 
