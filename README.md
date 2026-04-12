@@ -8,7 +8,7 @@
 ## 프로젝트 구조
 
 ```
-github-copilot-cli-squad/
+github-copilot-cli-agents/
 ├── AGENTS.md                           # 모든 에이전트 공통 가드레일 (Harness)
 ├── init.sh                             # Codespace 환경 셋업 스크립트
 ├── .devcontainer/
@@ -43,8 +43,8 @@ github-copilot-cli-squad/
 ### 방법 2: 로컬 환경
 
 ```bash
-git clone https://github.com/<owner>/github-copilot-cli-squad.git
-cd github-copilot-cli-squad
+git clone https://github.com/<owner>/github-copilot-cli-agents.git
+cd github-copilot-cli-agents
 ./init.sh
 ```
 
