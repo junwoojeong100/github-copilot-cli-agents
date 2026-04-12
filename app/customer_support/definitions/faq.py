@@ -1,6 +1,6 @@
 """FAQ agent — answers common customer questions using knowledge base."""
 
-from agent_framework import Agent
+from agent_framework import Agent, InMemoryHistoryProvider
 from agent_framework.foundry import FoundryChatClient
 
 from tools.knowledge_base import search_faq
@@ -21,9 +21,12 @@ Rules:
 
 def create_faq_agent(client: FoundryChatClient) -> Agent:
     """Create the FAQ agent with knowledge base search tool."""
-    return client.as_agent(
+    return Agent(
+        client=client,
         name="faq_agent",
         description="FAQ specialist that answers common customer questions using a knowledge base.",
         instructions=FAQ_INSTRUCTIONS,
         tools=[search_faq],
+        context_providers=[InMemoryHistoryProvider("faq_history", load_messages=True)],
+        require_per_service_call_history_persistence=True,
     )

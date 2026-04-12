@@ -1,7 +1,28 @@
 """Handoff workflow — builds the multi-agent customer support orchestration."""
 
-from agent_framework import Agent, Workflow
+from agent_framework import Agent, Message, Workflow
 from agent_framework.orchestrations import HandoffBuilder
+
+
+def _termination_condition(conversation: list[Message]) -> bool:
+    """Terminate when the customer indicates they're done."""
+    if not conversation:
+        return False
+    for msg in reversed(conversation[-4:]):
+        text = (msg.text or "").strip().lower()
+        if msg.role == "user" and any(
+            phrase in text
+            for phrase in ["thank", "that's all", "no more", "goodbye", "bye", "done", ""]
+        ):
+            # Check if the assistant already said goodbye
+            for later_msg in reversed(conversation):
+                if later_msg.role == "assistant" and any(
+                    w in (later_msg.text or "").lower()
+                    for w in ["welcome", "great day", "take care", "goodbye"]
+                ):
+                    return True
+            break
+    return False
 
 
 def build_support_workflow(
@@ -20,6 +41,7 @@ def build_support_workflow(
         HandoffBuilder(
             name="customer_support_handoff",
             participants=[triage_agent, faq_agent, refund_agent],
+            termination_condition=_termination_condition,
         )
         .with_start_agent(triage_agent)
         .add_handoff(triage_agent, [faq_agent], description="Route FAQ questions to the FAQ specialist.")

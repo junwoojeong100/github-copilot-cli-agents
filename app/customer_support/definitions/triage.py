@@ -1,6 +1,6 @@
 """Triage agent — classifies and routes customer inquiries."""
 
-from agent_framework import Agent
+from agent_framework import Agent, InMemoryHistoryProvider
 from agent_framework.foundry import FoundryChatClient
 
 TRIAGE_INSTRUCTIONS = """\
@@ -19,8 +19,11 @@ always route to the appropriate specialist.
 
 def create_triage_agent(client: FoundryChatClient) -> Agent:
     """Create the triage agent that classifies and routes inquiries."""
-    return client.as_agent(
+    return Agent(
+        client=client,
         name="triage_agent",
         description="Triage agent that classifies customer inquiries and routes to specialists.",
         instructions=TRIAGE_INSTRUCTIONS,
+        context_providers=[InMemoryHistoryProvider("triage_history", load_messages=True)],
+        require_per_service_call_history_persistence=True,
     )

@@ -13,6 +13,17 @@ from definitions import create_faq_agent, create_refund_agent, create_triage_age
 from workflow import build_support_workflow
 
 
+def print_event(event: WorkflowEvent) -> None:
+    """Print a streaming workflow event."""
+    if event.type not in ("data", "output"):
+        return
+    agent = event.executor_id or "System"
+    if hasattr(event, "data") and event.data is not None:
+        text = getattr(event.data, "text", None)
+        if text:
+            print(f"[{agent}]: {text}")
+
+
 async def main() -> None:
     load_dotenv()
 
@@ -41,14 +52,12 @@ async def main() -> None:
 
     pending_requests: list[WorkflowEvent] = []
 
-    # Start workflow
-    async for event in workflow.run_stream(user_input):
+    # Start workflow with streaming
+    async for event in workflow.run(user_input, stream=True):
         if event.type == "request_info":
             pending_requests.append(event)
-        elif event.type == "output":
-            for msg in event.data.messages:
-                if msg.text:
-                    print(f"[{msg.author_name or 'System'}]: {msg.text}")
+        else:
+            print_event(event)
 
     # Handle pending requests (user input & tool approvals)
     while pending_requests:
@@ -56,10 +65,13 @@ async def main() -> None:
 
         for request in pending_requests:
             if isinstance(request.data, HandoffAgentUserRequest):
-                print(f"\nAgent {request.executor_id} asks:")
-                for msg in request.data.agent_response.messages[-2:]:
-                    if msg.text:
-                        print(f"  {msg.author_name}: {msg.text}")
+                agent_name = request.source_executor_id or "Agent"
+                print(f"\n{agent_name} needs your input:")
+                if hasattr(request.data, "agent_response"):
+                    resp = request.data.agent_response
+                    text = getattr(resp, "text", None)
+                    if text:
+                        print(f"  {text}")
 
                 user_reply = input("You: ")
                 responses[request.request_id] = HandoffAgentUserRequest.create_response(user_reply)
@@ -75,13 +87,11 @@ async def main() -> None:
                 responses[request.request_id] = request.data.to_function_approval_response(approved=approval)
 
         pending_requests = []
-        async for event in workflow.run(responses=responses):
+        async for event in workflow.run(responses=responses, stream=True):
             if event.type == "request_info":
                 pending_requests.append(event)
-            elif event.type == "output":
-                for msg in event.data.messages:
-                    if msg.text:
-                        print(f"[{msg.author_name or 'System'}]: {msg.text}")
+            else:
+                print_event(event)
 
     print(f"\n{'='*60}")
     print("Workflow completed!")

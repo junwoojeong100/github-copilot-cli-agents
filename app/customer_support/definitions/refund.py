@@ -1,6 +1,6 @@
 """Refund agent — handles order lookup and refund processing."""
 
-from agent_framework import Agent
+from agent_framework import Agent, InMemoryHistoryProvider
 from agent_framework.foundry import FoundryChatClient
 
 from tools.refund_tools import lookup_order, process_refund
@@ -30,9 +30,12 @@ REFUND_AGENT_CONFIG = {
 
 def create_refund_agent(client: FoundryChatClient) -> Agent:
     """Create the refund agent with order lookup and refund processing tools."""
-    return client.as_agent(
+    return Agent(
+        client=client,
         name="refund_agent",
         description="Refund specialist that handles order lookups and refund processing.",
         instructions=REFUND_INSTRUCTIONS,
         tools=[lookup_order, process_refund],
+        context_providers=[InMemoryHistoryProvider("refund_history", load_messages=True)],
+        require_per_service_call_history_persistence=True,
     )
