@@ -14,12 +14,12 @@ You do NOT perform work directly. You:
 
 ## Available Patterns
 
-| Pattern | Files | Best For |
+| Pattern | Agent | Best For |
 |---------|-------|----------|
-| **Planner-Executor** | `patterns/planner_executor/` | 구현, 마이그레이션, 리팩토링 등 **계획 → 실행 → 검증** 작업 |
-| **Debate & Critic** | `patterns/debate_critic/` | 아키텍처 선택, 기술 스택 비교 등 **의사결정** 주제 |
-| **Generator-Evaluator** | `patterns/generator_evaluator/` | 코드/문서 생성, 리뷰 등 **생성 → 평가 → 개선** 작업 |
-| **Code Generation** | `patterns/code_generation/` | 코드 설계·구현·리뷰 등 **설계 → 구현 → 리뷰** 작업 |
+| **Planner-Executor** | `planner_executor` | 구현, 마이그레이션, 리팩토링 등 **계획 → 실행 → 검증** 작업 |
+| **Debate & Critic** | `debate_critic` | 아키텍처 선택, 기술 스택 비교 등 **의사결정** 주제 |
+| **Generator-Evaluator** | `generator_evaluator` | 코드/문서 생성, 리뷰 등 **생성 → 평가 → 개선** 작업 |
+| **Code Generation** | `code_generation` | 코드 설계·구현·리뷰 등 **설계 → 구현 → 리뷰** 작업 |
 
 ## Selection Heuristics
 
@@ -64,8 +64,7 @@ If the intent is unclear, ask the user:
 ### Delegation
 
 Once a pattern is selected, you BECOME that pattern's coordinator:
-- Read the selected pattern's `team.md` and `README.md`
-- Follow that pattern's routing rules exactly
+- Follow that pattern's routing rules exactly as defined in the corresponding `.github/agents/<pattern>.agent.md`
 - Spawn agents using the `task` tool as defined in the pattern
 - Do NOT re-analyze or second-guess the pattern mid-execution
 

@@ -13,20 +13,14 @@ github-copilot-cli-squad/
 ├── init.sh                             # Codespace 환경 셋업 스크립트
 ├── .devcontainer/
 │   └── devcontainer.json               # Codespace 시작 시 init.sh 자동 실행
-├── .github/agents/                     # Copilot CLI 에이전트 정의
+├── .github/agents/                     # Copilot CLI 에이전트 정의 (팀 구성·라우팅·다이어그램 포함)
 │   ├── orchestrator.agent.md           # 오케스트레이터 — 요청 분석 후 패턴 자동 선택
 │   ├── code_generation.agent.md        # 코드 설계→구현→리뷰 패턴 에이전트
 │   ├── planner_executor.agent.md       # 계획-실행 패턴 에이전트
 │   ├── debate_critic.agent.md          # 토론-비평 패턴 에이전트
 │   └── generator_evaluator.agent.md    # 생성-평가 패턴 에이전트
-├── .squad/                             # Squad 팀 상태 (team, decisions, agents 등)
-├── .copilot/
-│   └── mcp-config.json                 # MCP 서버 설정
-└── patterns/                           # 멀티 에이전트 협업 패턴 정의
-    ├── code_generation/                # 코드 설계→구현→리뷰 패턴
-    ├── debate_critic/                  # 변증법적 토론 패턴
-    ├── generator_evaluator/            # 생성-평가 반복 패턴
-    └── planner_executor/               # 계획-실행 분리 패턴
+└── .copilot/
+    └── mcp-config.json                 # MCP 서버 설정
 ```
 
 ## 시작하기

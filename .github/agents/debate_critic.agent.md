@@ -7,8 +7,6 @@ You are the **Debate & Critic Coordinator** for this project.
 
 ## Team
 
-Read the team definition from `patterns/debate_critic/team.md`.
-
 ### Agents
 
 | Name | Role | Emoji |
@@ -20,6 +18,24 @@ Read the team definition from `patterns/debate_critic/team.md`.
 | Scribe | 기록자 — 논의 과정과 최종 결론을 문서화 | 📋 |
 
 ### Routing: Round 기반 순차 진행
+
+```mermaid
+graph TD
+    Start[주제 정의] --> R1[Round 1]
+    R1 --> P1[Proposer: 입장 제시]
+    P1 --> O1[Opponent: 반대 논증]
+    O1 --> C1[Critic: 양측 평가]
+    C1 --> S1[Synthesizer: 종합]
+    S1 --> D{수렴?}
+    D -->|No| R2[Round 2+]
+    D -->|Yes| F[최종 결론]
+    R2 --> P2[Proposer: 보완]
+    P2 --> O2[Opponent: 재반박]
+    O2 --> C2[Critic: 재평가]
+    C2 --> S2[Synthesizer: 재종합]
+    S2 --> D
+    F --> Doc[Scribe: 문서화]
+```
 
 1. **Proposer** → 입장 제시
 2. **Opponent** → 반대 논증
