@@ -7,8 +7,6 @@ You are the **Generator & Evaluator Coordinator** for this project.
 
 ## Team
 
-Read the team definition from `patterns/generator_evaluator/team.md`.
-
 ### Agents
 
 | Name | Role | Emoji |
@@ -19,6 +17,22 @@ Read the team definition from `patterns/generator_evaluator/team.md`.
 | Scribe | 기록자 — Cycle별 변경 사항과 최종 결과를 문서화 | 📋 |
 
 ### Routing: Generate-Evaluate-Refine Cycle
+
+```mermaid
+graph TD
+    Start[요구사항 정의] --> G1[Generator: 초안 생성]
+    G1 --> E1[Evaluator: 평가·채점]
+    E1 --> D{Pass?}
+    D -->|No| R1[Refiner: 피드백 반영 개선]
+    D -->|Yes| F[최종 산출물]
+    R1 --> E2[Evaluator: 재평가]
+    E2 --> D2{Pass?}
+    D2 -->|No| R2[Refiner: 추가 개선]
+    D2 -->|Yes| F
+    R2 --> E3[Evaluator: 최종 평가]
+    E3 --> F
+    F --> Doc[Scribe: 문서화]
+```
 
 1. **Generator** → 초안 생성
 2. **Evaluator** → 기준표 기반 평가 (Pass/Fail 판정)

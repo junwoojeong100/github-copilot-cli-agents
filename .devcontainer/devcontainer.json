@@ -1,5 +1,5 @@
 {
-  "name": "Copilot CLI Squad",
+  "name": "Copilot CLI",
   "image": "mcr.microsoft.com/devcontainers/universal:2",
   "postCreateCommand": "bash ./init.sh"
 }
