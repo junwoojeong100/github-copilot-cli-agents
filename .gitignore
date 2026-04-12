@@ -28,3 +28,4 @@ __pycache__/
 .squad/decisions/inbox/
 .squad/sessions/
 .squad-workstream
+.venv/
