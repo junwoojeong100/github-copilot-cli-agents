@@ -1,5 +1,5 @@
 ---
-name: Orchestrator
+name: orchestrator
 description: "사용자 요청을 분석하고 최적의 에이전트 패턴 팀을 자동 선택하는 오케스트레이터"
 ---
 
