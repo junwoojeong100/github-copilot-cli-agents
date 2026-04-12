@@ -1,6 +1,6 @@
-# 🤖 Copilot CLI Squad
+# 🤖 Copilot CLI — Multi-Agent Patterns
 
-> GitHub Copilot CLI + Squad CLI를 활용한 **멀티 에이전트 협업 패턴** 레퍼런스 프로젝트
+> GitHub Copilot CLI를 활용한 **멀티 에이전트 협업 패턴** 레퍼런스 프로젝트
 
 여러 AI 에이전트가 역할을 분담하여 협업하는 패턴들을 정의하고,
 [GitHub Copilot CLI](https://docs.github.com/copilot)의 `--agent` 옵션으로 바로 실행할 수 있는 샘플을 제공합니다.
@@ -38,7 +38,6 @@ github-copilot-cli-squad/
 |------|------|
 | [GitHub Copilot CLI](https://docs.github.com/copilot) | `copilot` 명령으로 에이전트 실행 |
 | [Azure CLI](https://learn.microsoft.com/cli/azure/) | Azure 리소스 관리 |
-| [Squad CLI](https://github.com/bradygaster/squad) | AI 에이전트 팀 관리 |
 | [uv](https://docs.astral.sh/uv/) | Python 패키지 매니저 |
 
 ### 방법 2: 로컬 환경
@@ -65,14 +64,6 @@ copilot --agent code_generation --yolo
 
 # 기본 Copilot CLI (에이전트 없이)
 copilot
-```
-
-### Squad 대화형 쉘
-
-```bash
-squad              # 인터랙티브 모드 진입
-squad status       # 팀 상태 확인
-squad doctor       # 설정 검증
 ```
 
 ---
