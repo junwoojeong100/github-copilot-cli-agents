@@ -123,7 +123,7 @@ copilot --agent orchestrator --yolo
 | | 📐 Planner-Executor | ⚔️ Debate & Critic | ⚡ Generator-Evaluator | 🏗️ Code Generation |
 |---|---|---|---|---|
 | **목적** | 체계적 실행 | 최선의 결론 도출 | 반복 개선으로 품질 향상 | 설계 기반 코드 생성 |
-| **팀 구성** | Planner → Executor → Validator | Proposer ↔ Opponent → Critic → Synthesizer | Generator → Evaluator → Refiner | Architect → Developer → Reviewer |
+| **팀 구성** | Planner → Executor → Validator → Scribe | Proposer ↔ Opponent → Critic → Synthesizer → Scribe | Generator → Evaluator → Refiner → Scribe | Architect → Developer → Reviewer → Scribe |
 | **핵심 루프** | 계획 → 실행 → 검증 | 제안 → 반론 → 평가 | 생성 → 평가 → 개선 | 설계 → 구현 → 리뷰 |
 | **최대 반복** | Revise 후 재실행 | 3 Rounds | 3 Cycles | 3 Cycles |
 | **적합한 작업** | 구현, 마이그레이션, 셋업 | 기술 선택, 아키텍처 비교 | 코드 생성, 문서 작성, 리뷰 | 코드 설계·구현·리뷰 통합 |

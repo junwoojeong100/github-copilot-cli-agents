@@ -167,6 +167,11 @@ customer_support/
 │   ├── __init__.py
 │   └── handoff_workflow.py     # HandoffBuilder wiring
 │
+├── tests/                      # Integration tests
+│   ├── test_definitions.py     # Agent creation tests
+│   ├── test_tools.py           # Tool function tests
+│   └── test_workflow.py        # Workflow integration tests
+│
 ├── main.py                     # Entry point — assembles agents & runs workflow
 └── register_agents.py          # (Optional) Register agents in Azure AI Foundry
 ```
@@ -228,4 +233,5 @@ Registered agents:
 | `agent-framework[foundry,orchestrations]` | Agent creation, tool decorator, handoff workflow |
 | `azure-ai-projects` | Foundry SDK v2 for agent registration |
 | `azure-identity` | Azure authentication (CLI credentials) |
+| `pydantic` | Tool parameter validation via `Field` |
 | `python-dotenv` | `.env` file loading |
