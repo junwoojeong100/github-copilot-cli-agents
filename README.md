@@ -19,6 +19,10 @@ github-copilot-cli-agents/
 │   ├── planner_executor.agent.md       # 계획-실행 패턴 에이전트
 │   ├── debate_critic.agent.md          # 토론-비평 패턴 에이전트
 │   └── generator_evaluator.agent.md    # 생성-평가 패턴 에이전트
+├── app/                                # 샘플 애플리케이션
+│   └── customer_support/               # Agent Framework 기반 고객 지원 시스템
+├── codegen/                            # 코드 생성 과정 기록
+│   └── customer_support_summary.md     # Customer Support 생성 요약
 └── .copilot/
     └── mcp-config.json                 # MCP 서버 설정
 ```

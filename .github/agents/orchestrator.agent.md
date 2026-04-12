@@ -59,7 +59,7 @@ If the intent is unclear, ask the user:
 2. **Analyze** — 요청의 핵심 의도를 파악한다
 3. **Select** — 위 Heuristics에 따라 패턴을 선택한다
 4. **Announce** — 선택한 패턴과 이유를 한 줄로 알려준다
-5. **Delegate** — 선택한 패턴의 team.md를 읽고 워크플로우를 실행한다
+5. **Delegate** — 선택한 패턴의 agent.md를 읽고 워크플로우를 실행한다
 
 ### Delegation
 

@@ -10,7 +10,7 @@
 
 ### Phase 1: Architecture Design (🏗️ Architect)
 
-The Architect produced a comprehensive design document (`codegen/customer_support_design.md`) covering:
+The Architect produced a comprehensive design covering:
 
 - File structure with 14 files across 4 directories
 - Interface definitions with full function signatures and type hints
@@ -62,9 +62,9 @@ All issues resolved. Code approved.
 
 ### Agent Design
 
-- **`FoundryChatClient.as_agent()`** — Creates workflow-compatible `Agent` instances from a shared chat client
+- **`Agent(client=..., name=..., instructions=...)`** — Creates agents directly with `FoundryChatClient` as the shared chat client
 - **Instruction-based behavior** — Each agent has a dedicated instruction prompt stored as a module-level constant (e.g., `TRIAGE_INSTRUCTIONS`)
-- **Tool attachment** — Tools are passed directly to `as_agent()` via the `tools=` parameter
+- **Tool attachment** — Tools are passed directly to `Agent()` via the `tools=` parameter
 
 ### Workflow Pattern
 
@@ -74,7 +74,6 @@ All issues resolved. Code approved.
 
 ### Error Handling Strategy
 
-- **Typed exceptions** — `ChatClientInvalidAuthException`, `WorkflowException`, `AgentFrameworkException` instead of bare `Exception`
 - **Tool-level validation** — Input guards in `process_refund` (amount > 0, order exists, amount ≤ total)
 - **Graceful degradation** — User-friendly error messages with actionable guidance (e.g., "Run `az login`")
 

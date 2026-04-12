@@ -12,7 +12,7 @@ def _termination_condition(conversation: list[Message]) -> bool:
         text = (msg.text or "").strip().lower()
         if msg.role == "user" and any(
             phrase in text
-            for phrase in ["thank", "that's all", "no more", "goodbye", "bye", "done", ""]
+            for phrase in ["thank", "that's all", "no more", "goodbye", "bye", "done"]
         ):
             # Check if the assistant already said goodbye
             for later_msg in reversed(conversation):
