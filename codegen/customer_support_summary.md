@@ -24,7 +24,7 @@ The Developer implemented all 14 files following the architecture spec:
 
 | Directory | Files | Purpose |
 |-----------|-------|---------|
-| `definitions/` | `__init__.py`, `triage.py`, `faq.py`, `refund.py` | Agent creation via `FoundryChatClient.as_agent()` |
+| `definitions/` | `__init__.py`, `triage.py`, `faq.py`, `refund.py` | Agent creation via `Agent(client=...)` constructor |
 | `tools/` | `__init__.py`, `knowledge_base.py`, `refund_tools.py` | `@tool`-decorated functions |
 | `workflow/` | `__init__.py`, `handoff_workflow.py` | `HandoffBuilder` orchestration |
 | Root | `main.py`, `register_agents.py`, `pyproject.toml`, `.env.example`, `README.md` | Entry points, config, docs |
@@ -35,7 +35,7 @@ The Developer implemented all 14 files following the architecture spec:
 
 | # | Issue | Severity | Fix |
 |---|-------|----------|-----|
-| 1 | Generic `Exception` handling in `main.py` | Medium | Replaced with specific exceptions: `ChatClientInvalidAuthException`, `WorkflowException`, `AgentFrameworkException` |
+| 1 | Generic `Exception` handling in `main.py` | Medium | Improved error handling with specific exception guards |
 | 2 | Missing input validation in `process_refund` | High | Added validation: non-positive amount check, amount-exceeds-order-total check |
 
 #### Cycle 2 — 1 Issue Found

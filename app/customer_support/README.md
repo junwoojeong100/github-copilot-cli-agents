@@ -194,15 +194,13 @@ All tool inputs are validated before processing:
 - Order existence is verified before processing
 - Refund amounts exceeding the order total are rejected
 
-### Typed Error Handling
+### Error Handling
 
-The system uses specific exception types instead of generic `Exception` catches:
+The system handles errors at the tool level with input validation guards:
 
-| Exception | Scenario |
-|-----------|----------|
-| `ChatClientInvalidAuthException` | Azure authentication failure |
-| `WorkflowException` | Workflow orchestration errors |
-| `AgentFrameworkException` | General agent framework errors |
+- `process_refund` validates amount > 0, order existence, and amount ≤ order total
+- `lookup_order` returns structured JSON errors for missing orders
+- `search_faq` returns a fallback message when no matches are found
 
 ---
 
