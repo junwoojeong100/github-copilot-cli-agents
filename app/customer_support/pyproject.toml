@@ -1,0 +1,15 @@
+[project]
+name = "customer-support-agents"
+version = "0.1.0"
+description = "Multi-agent customer support system using Microsoft Agent Framework and Azure AI Foundry SDK v2"
+requires-python = ">=3.11"
+dependencies = [
+    "agent-framework[foundry,orchestrations]",
+    "azure-ai-projects",
+    "azure-identity",
+    "python-dotenv",
+]
+
+[build-system]
+requires = ["setuptools>=68.0"]
+build-backend = "setuptools.backends._legacy:_Backend"
