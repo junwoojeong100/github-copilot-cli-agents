@@ -29,6 +29,8 @@ github-copilot-cli-agents/
 
 ## 시작하기
 
+> 💡 GitHub Copilot CLI 자체에 대한 설치·사용법 가이드는 [Copilot CLI 가이드](docs/copilot-cli-guide.md)를 참고하세요.
+
 ### 사전 요구 사항
 
 - [GitHub Codespaces](https://github.com/features/codespaces) 또는 Node.js 22+ 환경
