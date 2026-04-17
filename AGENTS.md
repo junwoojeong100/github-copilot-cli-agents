@@ -61,8 +61,8 @@ git push <any-remote> <any-refspec>
 # ✅ 허용되는 워크플로우
 git checkout -b feat/my-change
 git add .
-git commit -m "feat: 변경 내용 설명"
-gh pr create --draft --title "변경 제목" --body "변경 설명"
+git commit -m "feat: describe the change in English"
+gh pr create --draft --base main --title "PR title in English" --body "PR description in English"
 
 # ❌ 절대 금지
 git push origin feat/my-change
@@ -76,9 +76,75 @@ git push origin feat/my-change
 
 ---
 
-### Rule 2: _(예약됨 — 향후 규칙 추가 시 이 형식을 따른다)_
+### Rule 2: 커밋 메시지는 영문으로 작성
 
-> 새로운 Harness Rule을 추가할 때는 위 Rule 1의 구조(금지 명령어, 이유, 대안, 집행)를 동일하게 적용한다.
+| 항목 | 내용 |
+|------|------|
+| **상태** | 🟢 필수 (Mandatory) |
+
+#### 규칙
+
+- 모든 `git commit` 메시지(제목·본문 모두)는 **영문(English)으로 작성**한다.
+- [Conventional Commits](https://www.conventionalcommits.org/) 스타일(`feat:`, `fix:`, `docs:`, `chore:`, `refactor:`, `test:` 등)을 권장한다.
+- 명령형 현재 시제(imperative mood)로 작성한다. 예: `Add`, `Fix`, `Update` (not `Added`, `Fixed`).
+- PR 제목과 본문도 영문으로 작성한다.
+
+#### 예시
+
+```bash
+# ✅ 올바른 예시
+git commit -m "feat: add orchestrator routing table for new pattern"
+git commit -m "fix: prevent infinite loop in debate-critic convergence check"
+git commit -m "docs: update README with renamed repository URL"
+
+# ❌ 잘못된 예시
+git commit -m "오케스트레이터 라우팅 추가"
+git commit -m "버그 수정"
+```
+
+#### 이유
+
+- **일관성**: 오픈소스 생태계 표준과 정렬하여 외부 기여자 친화적 환경을 유지한다.
+- **도구 호환성**: Changelog 생성기, semantic-release 등 자동화 도구가 영문 Conventional Commits를 전제로 한다.
+- **검색성**: `git log --grep` 및 GitHub 검색에서 균일한 결과를 보장한다.
+
+---
+
+### Rule 3: PR은 항상 `main` 브랜치를 대상으로 생성
+
+| 항목 | 내용 |
+|------|------|
+| **상태** | 🟢 필수 (Mandatory) |
+
+#### 규칙
+
+- 모든 PR은 **`main` 브랜치를 base로 생성**한다.
+- `gh pr create` 실행 시 `--base main`을 **명시적으로 지정**한다 (기본 브랜치가 변경되어도 의도가 명확히 남도록).
+- PR은 기본적으로 **Draft(`--draft`)로 생성**하여 사람의 리뷰·승인을 전제로 한다.
+
+#### 예시
+
+```bash
+# ✅ 올바른 예시
+gh pr create --draft --base main \
+  --title "feat: add new agent pattern" \
+  --body "Summary of the change in English."
+
+# ❌ 잘못된 예시 (base 생략 / 다른 브랜치 대상)
+gh pr create --title "변경"
+gh pr create --base develop --title "feat: ..."
+```
+
+#### 이유
+
+- **단일 통합 지점**: `main`을 유일한 통합 브랜치로 유지하여 릴리스 흐름을 단순화한다.
+- **명시성**: `--base main`을 항상 지정하여 에이전트의 의도를 감사 로그에 명확히 기록한다.
+
+---
+
+### Rule 4: _(예약됨 — 향후 규칙 추가 시 이 형식을 따른다)_
+
+> 새로운 Harness Rule을 추가할 때는 위 규칙들의 구조(규칙, 예시, 이유, 집행)를 동일하게 적용한다.
 
 ---
 
