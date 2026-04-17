@@ -15,64 +15,89 @@
 
 ## Harness Rules
 
-### Rule 1: `git push` 절대 금지
+### Rule 1: 기능 브랜치 push 허용 / 보호 브랜치 push 절대 금지
 
 | 항목 | 내용 |
 |------|------|
-| **상태** | 🔴 절대 금지 (Absolute Prohibition) |
+| **상태** | 🟡 조건부 허용 (Conditional) |
+
+#### 허용되는 명령어 (Allowed Commands)
+
+에이전트는 **기능 브랜치(feature branch)** 에 한해 다음 형태의 push를 실행할 수 있다:
+
+```bash
+git push -u origin <feature-branch>
+git push origin <feature-branch>
+git push --set-upstream origin <feature-branch>
+```
+
+기능 브랜치란 `main`, `master`, `develop`, `release/*`, `hotfix/*` 등 **보호 브랜치가 아닌** 모든 브랜치를 말한다(예: `feat/*`, `fix/*`, `docs/*`, `chore/*`, `refactor/*`).
 
 #### 금지 명령어 (Prohibited Commands)
 
-다음 명령어 및 그 모든 변형은 **절대 실행해서는 안 된다**:
+다음은 **절대 실행해서는 안 된다**:
 
-```
-git push
-git push origin
+```bash
+# 보호 브랜치에 직접 push 금지
 git push origin main
-git push origin <any-branch>
+git push origin master
+git push origin develop
+git push origin release/<any>
+git push origin hotfix/<any>
+
+# 히스토리 재작성 push 금지 (모든 브랜치 대상)
 git push --force
 git push --force-with-lease
 git push -f
-git push -u origin <branch>
-git push --set-upstream origin <branch>
-git push --tags
-git push --all
-git push <any-remote> <any-refspec>
-```
 
-`git push`로 시작하는 **모든 형태의 명령어**가 금지 대상이다. 예외는 없다.
+# 광역 push 금지
+git push --all
+git push --mirror
+git push --tags          # 태그는 사용자가 직접 푼다
+
+# 우회/모호한 push 금지
+git push <any-remote> <any-refspec>:refs/heads/main
+git push <any-remote> HEAD:<protected-branch>
+```
 
 #### 이유 (Rationale)
 
-1. **Human Review 보장**: 코드가 원격 저장소에 반영되기 전에 반드시 사람의 검토를 거쳐야 한다
-2. **Protected Branch 보호**: `main`, `develop` 등 보호된 브랜치에 에이전트가 직접 push하는 사고를 원천 차단한다
-3. **감사 추적 (Audit Trail)**: 모든 원격 반영은 PR을 통해 이루어져야 변경 이력과 승인 기록이 남는다
-4. **되돌림 용이성**: PR 기반 워크플로우는 revert가 명확하고 안전하다
+1. **Human Review 보장**: 보호 브랜치(main 등)에는 반드시 PR + 리뷰를 거쳐 반영한다
+2. **Protected Branch 보호**: 에이전트가 실수로 보호 브랜치를 덮어쓰는 사고를 원천 차단한다
+3. **히스토리 무결성**: force push는 공유 히스토리를 손상시킬 수 있어 전면 금지한다
+4. **감사 추적 (Audit Trail)**: 모든 보호 브랜치 반영은 PR로 남아 변경 이력과 승인 기록이 유지된다
 
-#### 대안 (Alternative)
+#### 표준 워크플로우 (Standard Workflow)
 
-에이전트가 변경 사항을 원격에 반영해야 할 때는 다음 절차를 따른다:
+에이전트가 원격에 변경 사항을 반영할 때는 다음 절차를 따른다:
 
-1. **로컬 커밋**: `git add` → `git commit`으로 변경 사항을 로컬에 기록한다
-2. **PR 생성**: `gh pr create --draft` 명령으로 Draft PR을 생성한다
-3. **사용자 알림**: "Push가 필요합니다"라고 사용자에게 명확히 알린다
+1. **기능 브랜치 생성**: `git checkout -b <type>/<slug>`
+2. **로컬 커밋**: `git add` → `git commit` (영문 메시지, Rule 2 참조)
+3. **기능 브랜치 push**: `git push -u origin <feature-branch>` — 허용
+4. **PR 생성**: `gh pr create --draft --base main ...` (Rule 3 참조)
 
 ```bash
 # ✅ 허용되는 워크플로우
 git checkout -b feat/my-change
 git add .
 git commit -m "feat: describe the change in English"
+git push -u origin feat/my-change
 gh pr create --draft --base main --title "PR title in English" --body "PR description in English"
 
-# ❌ 절대 금지
-git push origin feat/my-change
+# ❌ 절대 금지 (보호 브랜치 직접 push)
+git checkout main
+git push origin main
+
+# ❌ 절대 금지 (force push)
+git push --force-with-lease origin feat/my-change
 ```
 
 #### 집행 (Enforcement)
 
-- 에이전트는 `git` 명령어를 실행하기 전에 이 Harness를 확인해야 한다
-- `git push`가 포함된 명령어를 생성하거나 실행하려는 시도 자체가 위반이다
-- Shell script, alias, subprocess 등 우회 수단을 통한 push도 금지된다
+- 에이전트는 `git push` 명령어를 실행하기 전에 **대상 ref**가 보호 브랜치인지, **force 계열 옵션**이 포함되어 있는지 반드시 확인한다
+- 보호 브랜치 push, force push, 광역 push 시도 자체가 위반이다
+- Shell script, alias, subprocess 등 우회 수단으로도 금지 항목을 실행할 수 없다
+- 의심스러우면 push를 중단하고 사용자에게 확인한다
 
 ---
 
